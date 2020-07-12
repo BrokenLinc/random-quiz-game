@@ -7,75 +7,127 @@
  */
 
 import React from 'react';
-import { find, isEmpty, map, sample } from 'lodash';
-import { usePrevious } from 'react-use';
+import { find, get, map, mapValues } from 'lodash';
 
 import useAuth from '../lib/useAuth';
 import api from '../api';
+import { PHASES_PER_ROUND, ROUNDS_PER_GAME } from '../utils/constants';
+import getFilledArrayWithIndexValue from '../utils/getFilledArrayWithIndexValue';
+import getReadyIndex from '../utils/getReadyIndex';
+import getUserScores from '../utils/getUserScores';
 
 const useCreateGameVM = ({ gameId }) => {
   const auth = useAuth();
-  const myUserId = auth.user?.id;
-  const game = api.useGameData(gameId);
-  const users = api.useGameUsersData(gameId);
-  const myUser = api.useGameUserData(gameId, myUserId);
+  const gameResponse = api.useGameData(gameId);
+  const usersResponse = api.useGameUsersData(gameId);
 
   // aliases
-  const loaded = game.loaded && users.loaded && myUser;
-  const error = game.error || users.error || myUser.error;
-  const userIds = game.data?.userIds || [];
-  const currentTurnUserId = game.data?.currentTurnUserId;
+  const myUser = auth.user;
+  const loaded = gameResponse.loaded && usersResponse.loaded;
+  const error = gameResponse.error || usersResponse.error;
+  const game = gameResponse.data;
 
   // calculated values
-  const previousTurnUserId = usePrevious(currentTurnUserId);
-  const hasStarted = !!currentTurnUserId;
-  const isMyTurn = !!currentTurnUserId && currentTurnUserId === myUserId;
-  const justBecameMyTurn = isMyTurn && (currentTurnUserId !== previousTurnUserId);
-  const usersInTurnOrder = map(game.data?.userIds, (id) => {
-    return find(users.data, { id });
+  const readyIndex = getReadyIndex(game);
+  let everyoneReady = true;
+  const users = mapValues(usersResponse.data, (user) => {
+    const ready = get(user.readies, readyIndex) || false;
+    if (!ready) everyoneReady = false;
+    return {
+      ...user,
+      answer: get(user.answers, game?.round),
+      ready,
+      scores: getUserScores(user.id, usersResponse.data),
+      vote: get(user.votes, game?.round),
+    };
   });
+  const myGameUser = find(users, { id: myUser.id });
 
   // functions
-  const incrementTurn = () => {
-    if (isEmpty(userIds)) return false;
-
-    const index = userIds.indexOf(currentTurnUserId);
-    const nextIndex = (index + 1 ) % userIds.length;
-
-    return api.updateGame(gameId, {
-      currentTurnUserId: userIds[nextIndex],
+  const answer = (text, userId = myGameUser.id) => {
+    const answers = getFilledArrayWithIndexValue(myGameUser.answers, game.round, text);
+    return api.updateGameUser(gameId, userId, {
+      answers,
     });
   };
-
-  const incrementUserScore = (userId, value) => {
-    return api.incrementGameUserScore(gameId, userId, value);
-  };
-
-  const restart = async () => {
-    if (isEmpty(userIds)) return false;
-
+  const end = () => {
     return api.updateGame(gameId, {
-      currentTurnUserId: sample(userIds),
+      isOver: true,
+    })
+  };
+  const join = (userValues) => {
+    return api.addGameUser(gameId, myUser.id, userValues);
+  };
+  const next = () => {
+    if (game.phase === PHASES_PER_ROUND - 1) {
+      if (game.round === ROUNDS_PER_GAME - 1) {
+        return end();
+      }
+      return nextRound();
+    }
+    return nextPhase();
+  };
+  const nextPhase = () => {
+    const newPhase = game.phase + 1;
+    return api.updateGame(gameId, {
+      phase: newPhase,
+    });
+  };
+  const nextRound = () => {
+    return api.updateGame(gameId, {
+      round: game.round + 1,
+      phase: 0,
+    });
+  }
+  const ready = (value = true, userId = myGameUser.id) => {
+    const readies = getFilledArrayWithIndexValue(myGameUser.readies, readyIndex, value, false);
+    return api.updateGameUser(gameId, userId, {
+      readies,
+    });
+  };
+  const start = () => {
+    const promises = map(users, (user) => {
+      api.updateGameUser(gameId, user.id, {
+        answers: [],
+        readies: [],
+        votes: [],
+      });
+    });
+    promises.push(api.updateGame(gameId, {
+      hasStarted: true,
+      isOver: false,
+      round: 0,
+      phase: 0,
+    }));
+  };
+  const vote = (forUserId, userId = myGameUser.id) => {
+    const votes = getFilledArrayWithIndexValue(myUser.votes, game.round, forUserId);
+    return api.updateGameUser(gameId, userId, {
+      votes,
     });
   };
 
   const vm = {
-    loaded,
+    actions: {
+      answer,
+      end,
+      join,
+      next,
+      nextPhase,
+      nextRound,
+      ready,
+      start,
+      vote,
+    },
     error,
-    gameId,
-    game: game.data,
-    users: users.data,
-    currentTurnUserId,
-    hasStarted,
-    isMyTurn,
-    justBecameMyTurn,
-    usersInTurnOrder,
-    incrementTurn,
-    incrementUserScore,
-    restart,
+    everyoneReady,
+    game,
+    loaded,
+    myUser,
+    users,
   };
 
-  // console.log('game vm', vm)
+  // console.log('game vm', vm);
 
   return vm;
 };

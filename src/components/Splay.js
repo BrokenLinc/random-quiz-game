@@ -3,7 +3,9 @@ import { map } from 'lodash';
 import { List, ListItem, Text } from '@chakra-ui/core';
 
 const printValue = (value) => {
-  if (Array.isArray(value)) return value.join(', ');
+  if (Array.isArray(value)) return `[${value.join(', ')}]`;
+  if (typeof value === 'object') return '{ ... }';
+  if (typeof value === 'function') return 'function(){ ... }';
   if(typeof value === 'boolean') return value ? 'true' : 'false';
   return value;
 };

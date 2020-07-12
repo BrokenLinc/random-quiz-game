@@ -28,7 +28,7 @@ const GamesListing = () => {
       {map(myGames, (game, i) => (
         <Button
           key={game.id}
-          onClick={() => history.push(`game/${game.id}`)}
+          onClick={() => history.push(`game-debugger/${game.id}`)}
           variant="outline"
           size="lg"
           variantColor="green"

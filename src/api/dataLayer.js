@@ -63,8 +63,8 @@ export const updateGameUser = (gameId, userId, values) => {
   return db.gameUser(gameId, userId).set(values, { merge: true });
 };
 export const deleteGameUser = async (gameId, userId) => {
+  // Update the normalization arrays
   await updateGame(gameId, { userIds: arrayRemove(userId) });
-  // TODO advance the turn if it's this user's turn (handle in business layer?)
   return db.gameUser(gameId, userId).delete();
 };
 
