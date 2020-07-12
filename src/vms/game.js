@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { find, get, map, mapValues } from 'lodash';
+import { find, get, map, mapValues, sum } from 'lodash';
 
 import useAuth from '../lib/useAuth';
 import api from '../api';
@@ -25,20 +25,23 @@ const useCreateGameVM = ({ gameId }) => {
   const myUser = auth.user;
   const loaded = gameResponse.loaded && usersResponse.loaded;
   const error = gameResponse.error || usersResponse.error;
-  const game = gameResponse.data;
 
   // calculated values
+  const game = { ...gameResponse.data };
+  game.question = get(game.questions, game.round);
+  game.everyoneReady = true;
   const readyIndex = getReadyIndex(game);
-  let everyoneReady = true;
   const users = mapValues(usersResponse.data, (user) => {
     const ready = get(user.readies, readyIndex) || false;
-    if (!ready) everyoneReady = false;
+    if (!ready) game.everyoneReady = false;
+    const scores = getUserScores(user.id, usersResponse.data);
     return {
       ...user,
-      answer: get(user.answers, game?.round),
+      answer: get(user.answers, game.round),
       ready,
-      scores: getUserScores(user.id, usersResponse.data),
-      vote: get(user.votes, game?.round),
+      score: sum(scores),
+      scores,
+      vote: get(user.votes, game.round),
     };
   });
   const myGameUser = find(users, { id: myUser.id });
@@ -98,10 +101,22 @@ const useCreateGameVM = ({ gameId }) => {
       isOver: false,
       round: 0,
       phase: 0,
+      questions: [
+        'What is a moose\'s favorite pizza topping?',
+        'What that Russian cartoon about competitive eating called?',
+        'How many bananas can fit inside an estranged father?',
+        'Who invented the copper toothbrush?',
+        'What comes next after "Macaroni"?',
+        "Who is famous for defeating the French Bulldog Association?",
+        "Where is Chipishka from?",
+        "What is the capital of Pepperoni?",
+        "Where can you find chopsticks at 5pm?",
+        "Why does sleep never come?",
+      ],
     }));
   };
   const vote = (forUserId, userId = myGameUser.id) => {
-    const votes = getFilledArrayWithIndexValue(myUser.votes, game.round, forUserId);
+    const votes = getFilledArrayWithIndexValue(myGameUser.votes, game.round, forUserId);
     return api.updateGameUser(gameId, userId, {
       votes,
     });
@@ -120,10 +135,9 @@ const useCreateGameVM = ({ gameId }) => {
       vote,
     },
     error,
-    everyoneReady,
     game,
     loaded,
-    myUser,
+    myGameUser,
     users,
   };
 

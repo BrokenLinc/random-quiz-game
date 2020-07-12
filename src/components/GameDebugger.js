@@ -17,8 +17,7 @@ import Suspender from './Suspender';
 
 const GameView = () => {
   const vm = useGameVM();
-  const { actions, everyoneReady, game, myUser, users } = vm;
-
+  const { actions, game, myUser, users } = vm;
 
   const onJoinClick = () => {
     actions.join({
@@ -37,7 +36,6 @@ const GameView = () => {
             <Button onClick={actions.next}>Next</Button>
             <Button onClick={actions.end}>End game</Button>
           </Stack>
-          <Splay type="Viewmodel" {...{ everyoneReady }} />
           <Splay type="Game" {...game} />
           {map(users, (user) => (
             <div key={user.id}>
