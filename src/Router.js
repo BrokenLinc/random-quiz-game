@@ -9,8 +9,8 @@ import GameDebugger from './components/GameDebugger';
 const Router = () => (
   <BrowserRouter>
     <Switch>
-      <PrivateRoute component={GameDebugger} path="/game-debugger/:gameId" exact />
-      <PrivateRoute component={Game} path="/game/:gameId" exact />
+      <PrivateRoute component={GameDebugger} path="/:gameId/debug" exact />
+      <PrivateRoute component={Game} path="/:gameId" exact />
       <PrivateRoute component={Games} path="/" />
     </Switch>
   </BrowserRouter>

@@ -24,7 +24,7 @@ const Question = () => {
   );
 
   if (myGameUser.ready) return (
-    <Heading mb={4}>Waiting on other players...</Heading>
+    <Heading mb={4}>Waiting on {map(game.unreadyUsers, (user) => user.name).join(', ')}...</Heading>
   );
 
   return (
@@ -42,7 +42,7 @@ const Question = () => {
       )}
     </React.Fragment>
   );
-}
+};
 
 const Vote = () => {
   const vm = useGameVM();
@@ -59,13 +59,13 @@ const Vote = () => {
   );
 
   if (myGameUser.ready) return (
-    <Heading mb={4}>Waiting on other players...</Heading>
+    <Heading mb={4}>Waiting on {map(game.unreadyUsers, (user) => user.name).join(', ')}...</Heading>
   );
 
   return (
     <React.Fragment>
       <Heading mb={4}>What's the best answer?</Heading>
-      <Text>Q: "{game.question}"</Text>
+      <Text fontWeight="bold" mb={4}>Q: "{game.question}"</Text>
       <RadioGroup
         defaultValue={myGameUser.vote}
         isDisabled={myGameUser.ready}
@@ -82,7 +82,7 @@ const Vote = () => {
       )}
     </React.Fragment>
   );
-}
+};
 
 const Scoreboard = () => {
   const vm = useGameVM();
@@ -95,11 +95,13 @@ const Scoreboard = () => {
   // TODO: if it's the last round of the game, show as "total score" with "new game" button.
 
   if (game.everyoneReady) return (
-    <Button onClick={actions.next}>Start the next round!</Button>
+    <Button onClick={actions.next}>
+      {game.isLastRound ? 'Start a new game!' : 'Start the next round!'}
+    </Button>
   );
 
   if (myGameUser.ready) return (
-    <Heading mb={4}>Waiting on other players...</Heading>
+    <Heading mb={4}>Waiting on {map(game.unreadyUsers, (user) => user.name).join(', ')}...</Heading>
   );
 
   return (
@@ -119,24 +121,29 @@ const Scoreboard = () => {
       )}
     </React.Fragment>
   );
-}
+};
 
 const GameView = () => {
   const vm = useGameVM();
-  const { actions, game, users } = vm;
+  const { actions, game, myUser, myGameUser, users } = vm;
 
-  // const onJoinClick = () => {
-  //   actions.join({
-  //     name: myUser.displayName.split(' ')[0],
-  //     photoURL: myUser.photoURL,
-  //   });
-  // };
+  // TODO: centralize host/join logic
+  const onJoinClick = () => {
+    actions.join({
+      name: myUser.displayName.split(' ')[0],
+      photoURL: myUser.photoURL,
+    });
+  };
 
   return (
-    <Suspender {...vm}>
-      {() => (
-        <Box p={4}>
-          {!game.hasStarted && (
+    <Box p={4}>
+      <Suspender {...vm}>
+        {() => {
+          if (!myGameUser) return (
+            <Button onClick={onJoinClick}>Join game</Button>
+          );
+
+          if (!game.hasStarted) return (
             <React.Fragment>
               <Heading mb={4}>Send your friends the link!</Heading>
               <Stack mb={4} spacing={2}>
@@ -149,23 +156,22 @@ const GameView = () => {
               </Stack>
               <Button onClick={actions.start}>Start game</Button>
             </React.Fragment>
-          )}
-          {game.hasStarted && (
-            <React.Fragment>
-              {(game.phase === 0) && (
-                <Question />
-              )}
-              {(game.phase === 1) && (
-                <Vote />
-              )}
-              {(game.phase === 2) && (
-                <Scoreboard />
-              )}
-            </React.Fragment>
-          )}
-        </Box>
-      )}
-    </Suspender>
+          );
+
+          if (game.phase === 0) return (
+            <Question />
+          );
+
+          if (game.phase === 1) return (
+            <Vote />
+          );
+
+          if (game.phase === 2) return (
+            <Scoreboard />
+          );
+        }}
+      </Suspender>
+    </Box>
   );
 };
 

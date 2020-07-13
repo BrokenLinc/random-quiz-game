@@ -28,12 +28,17 @@ const useCreateGameVM = ({ gameId }) => {
 
   // calculated values
   const game = { ...gameResponse.data };
+  game.isLastRound = (game.round === ROUNDS_PER_GAME - 1);
   game.question = get(game.questions, game.round);
   game.everyoneReady = true;
+  game.unreadyUsers = [];
   const readyIndex = getReadyIndex(game);
   const users = mapValues(usersResponse.data, (user) => {
     const ready = get(user.readies, readyIndex) || false;
-    if (!ready) game.everyoneReady = false;
+    if (!ready) {
+      game.everyoneReady = false;
+      game.unreadyUsers.push(user);
+    }
     const scores = getUserScores(user.id, usersResponse.data);
     return {
       ...user,
@@ -138,6 +143,7 @@ const useCreateGameVM = ({ gameId }) => {
     game,
     loaded,
     myGameUser,
+    myUser,
     users,
   };
 

@@ -20,11 +20,6 @@ const useCreateAuthorizedVM = () => {
     return game;
   };
 
-  const joinGame = (gameId, userValues) => {
-    if (!myUserId) return false;
-    return api.addGameUser(gameId, myUserId, userValues);
-  };
-
   const vm = {
     loaded: auth.loaded && myGames.loaded,
     error: auth.error || myGames.error,
@@ -32,7 +27,6 @@ const useCreateAuthorizedVM = () => {
     myGames: myGames.data,
     haveGames: !isEmpty(myGames.data),
     hostGame,
-    joinGame,
   };
 
   // console.log(vm);

@@ -28,7 +28,7 @@ const GamesListing = () => {
       {map(myGames, (game, i) => (
         <Button
           key={game.id}
-          onClick={() => history.push(`game-debugger/${game.id}`)}
+          onClick={() => history.push(game.id)}
           variant="outline"
           size="lg"
           variantColor="green"
@@ -52,8 +52,12 @@ const NewGameButton = (props) => {
 
   const onSubmit = async (gameValues) => {
     // TODO: let the user supply a displayName and photoURL
-    const game = await hostGame(gameValues, user);
-    history.push(`game/${game.id}`);
+    // TODO: centralize host/join logic
+    const game = await hostGame(gameValues, {
+      name: user.displayName.split(' ')[0],
+      photoURL: user.photoURL,
+    });
+    history.push(game.id);
   };
 
   return (
@@ -70,39 +74,6 @@ const NewGameButton = (props) => {
           name="name"
           placeholder="Untitled Game"
           ref={register({ maxLength: 30, required: 'Required' })}
-          autoFocus
-        />
-      </SimpleModal>
-    </>
-  );
-};
-
-const JoinGameButton = (props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { register, handleSubmit } = useForm();
-  const { joinGame, user } = useAuthorizedVM();
-  const history = useHistory();
-
-  const onSubmit = async (values) => {
-    const { gameId } = values;
-    await joinGame(gameId, user);
-    history.push(`game/${gameId}`);
-  };
-
-  return (
-    <>
-      <Button {...props} onClick={onOpen}>Join game</Button>
-      <SimpleModal
-        title="Enter invitation code"
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={handleSubmit(onSubmit)}
-        footer={<Button type="submit" rightIcon="arrow-right">Join game</Button>}
-      >
-        <Input
-          name="gameId"
-          placeholder="xxxxxxxxxxxx"
-          ref={register({ maxLength: 20, required: 'Required' })}
           autoFocus
         />
       </SimpleModal>
@@ -138,7 +109,6 @@ const GamesView = () => {
       <Stack width={220}>
         <NewGameButton />
         <LoadGameButton />
-        <JoinGameButton />
         <Button
           onClick={auth.signOut}
           alignSelf="center"
