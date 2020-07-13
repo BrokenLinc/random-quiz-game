@@ -30,10 +30,6 @@ const Question = () => {
     <Button onClick={actions.next} variantColor="green">Vote now!</Button>
   );
 
-  if (myGameUser.ready) return (
-    <Heading mb={4}>{getWaitingMessageForUsers(game.unreadyUsers)}</Heading>
-  );
-
   return (
     <React.Fragment>
       <Heading mb={4}>Q: {game.question}</Heading>
@@ -53,7 +49,7 @@ const Question = () => {
 
 const Vote = () => {
   const vm = useGameVM();
-  const { actions, game, myGameUser, users } = vm;
+  const { actions, game, users } = vm;
 
   const setVote = (userId) => {
     actions.vote(userId);
@@ -64,18 +60,18 @@ const Vote = () => {
     <Button onClick={actions.next} variantColor="green">See the results!</Button>
   );
 
-  if (myGameUser.ready) return (
-    <Heading mb={4}>{getWaitingMessageForUsers(game.unreadyUsers)}</Heading>
-  );
+  // TODO: randomize display based on static seed
 
   return (
     <React.Fragment>
       <Heading mb={4}>What's the best answer?</Heading>
       <Text fontWeight="bold" mb={4}>Q: "{game.question}"</Text>
       <Stack mb={4}>
-        {map(users, (user) => (
-          <Button value={user.id} onClick={() => setVote(user.id)}>{user.answer}</Button>
-        ))}
+        {map(users, (user) => {
+          return (
+            <Button key={user.id} onClick={() => setVote(user.id)}>{user.answer}</Button>
+          );
+        })}
       </Stack>
     </React.Fragment>
   );
@@ -95,10 +91,6 @@ const Scoreboard = () => {
     <Button onClick={actions.next} variantColor="green">
       {game.isLastRound ? 'Start a new game!' : 'Start the next round!'}
     </Button>
-  );
-
-  if (myGameUser.ready) return (
-    <Heading mb={4}>{getWaitingMessageForUsers(game.unreadyUsers)}</Heading>
   );
 
   return (
@@ -153,6 +145,10 @@ const GameView = () => {
               </Stack>
               <Button onClick={actions.start}>Start game</Button>
             </React.Fragment>
+          );
+
+          if (myGameUser.ready && !game.everyoneReady) return (
+            <Heading mb={4}>{getWaitingMessageForUsers(game.unreadyUsers)}</Heading>
           );
 
           if (game.phase === 0) return (
