@@ -1,7 +1,7 @@
 import { map } from 'lodash';
 import React from 'react';
 import {
-  Avatar, Box, Flex, Heading, Input, Radio, RadioGroup, Stack, Text,
+  Avatar, Box, Flex, Heading, Input, Stack, Text,
 } from '@chakra-ui/core';
 
 import { AuthorizedVMProvider } from '../vms/authorized';
@@ -47,10 +47,9 @@ const Question = () => {
 const Vote = () => {
   const vm = useGameVM();
   const { actions, game, myGameUser, users } = vm;
-  const [myVote, setMyVote] = React.useState('');
 
-  const onOkayClick = () => {
-    actions.vote(myVote);
+  const setVote = (userId) => {
+    actions.vote(userId);
     actions.ready();
   };
 
@@ -66,20 +65,11 @@ const Vote = () => {
     <React.Fragment>
       <Heading mb={4}>What's the best answer?</Heading>
       <Text fontWeight="bold" mb={4}>Q: "{game.question}"</Text>
-      <RadioGroup
-        defaultValue={myGameUser.vote}
-        isDisabled={myGameUser.ready}
-        value={myVote}
-        onChange={(e) => setMyVote(e.target.value)}
-        mb={4}
-      >
+      <Stack mb={4}>
         {map(users, (user) => (
-          <Radio value={user.id}>{user.answer}</Radio>
+          <Button value={user.id} onClick={() => setVote(user.id)}>{user.answer}</Button>
         ))}
-      </RadioGroup>
-      {!myGameUser.ready && (
-        <Button isDisabled={!myVote} onClick={onOkayClick}>Okay</Button>
-      )}
+      </Stack>
     </React.Fragment>
   );
 };
