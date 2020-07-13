@@ -6,8 +6,15 @@ import {
 
 import { AuthorizedVMProvider } from '../vms/authorized';
 import { GameVMProvider, useGameVM } from '../vms/game';
+import friendlyJoin from '../utils/friendlyJoin';
 import Button from './Button';
 import Suspender from './Suspender';
+
+// TODO: WaitingForPlayers component
+const getWaitingMessageForUsers = (users) => {
+  const names = map(users, (user) => user.name);
+  return `Waiting for ${friendlyJoin(names)}...`
+};
 
 const Question = () => {
   const vm = useGameVM();
@@ -20,11 +27,11 @@ const Question = () => {
   };
 
   if (game.everyoneReady) return (
-    <Button onClick={actions.next}>Vote now!</Button>
+    <Button onClick={actions.next} variantColor="green">Vote now!</Button>
   );
 
   if (myGameUser.ready) return (
-    <Heading mb={4}>Waiting on {map(game.unreadyUsers, (user) => user.name).join(', ')}...</Heading>
+    <Heading mb={4}>{getWaitingMessageForUsers(game.unreadyUsers)}</Heading>
   );
 
   return (
@@ -54,11 +61,11 @@ const Vote = () => {
   };
 
   if (game.everyoneReady) return (
-    <Button onClick={actions.next}>See the results!</Button>
+    <Button onClick={actions.next} variantColor="green">See the results!</Button>
   );
 
   if (myGameUser.ready) return (
-    <Heading mb={4}>Waiting on {map(game.unreadyUsers, (user) => user.name).join(', ')}...</Heading>
+    <Heading mb={4}>{getWaitingMessageForUsers(game.unreadyUsers)}</Heading>
   );
 
   return (
@@ -85,13 +92,13 @@ const Scoreboard = () => {
   // TODO: if it's the last round of the game, show as "total score" with "new game" button.
 
   if (game.everyoneReady) return (
-    <Button onClick={actions.next}>
+    <Button onClick={actions.next} variantColor="green">
       {game.isLastRound ? 'Start a new game!' : 'Start the next round!'}
     </Button>
   );
 
   if (myGameUser.ready) return (
-    <Heading mb={4}>Waiting on {map(game.unreadyUsers, (user) => user.name).join(', ')}...</Heading>
+    <Heading mb={4}>{getWaitingMessageForUsers(game.unreadyUsers)}</Heading>
   );
 
   return (
@@ -107,7 +114,7 @@ const Scoreboard = () => {
         ))}
       </Stack>
       {!myGameUser.ready && (
-        <Button onClick={onOkayClick}>Okay</Button>
+        <Button onClick={onOkayClick} variantColor="green">Ready!</Button>
       )}
     </React.Fragment>
   );
