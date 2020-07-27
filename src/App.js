@@ -1,5 +1,6 @@
 import React from 'react';
 import firebase from 'firebase/app';
+import { AnimateSharedLayout } from 'framer-motion';
 
 import firebaseConfig from './firebaseConfig';
 import { AuthProvider } from './lib/useAuth';
@@ -11,7 +12,9 @@ firebase.initializeApp(firebaseConfig);
 const App = () => (
   <AuthProvider>
     <ThemeProvider>
-      <Router />
+      <AnimateSharedLayout>
+        <Router />
+      </AnimateSharedLayout>
     </ThemeProvider>
   </AuthProvider>
 );
