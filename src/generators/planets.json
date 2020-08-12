@@ -1,0 +1,47 @@
+[
+{
+"name": "Mercury",
+"mass": 0.33,
+"distanceFromSun": 57.9
+},
+{
+"name": "Venus",
+"mass": 4.87,
+"distanceFromSun": 108.2
+},
+{
+"name": "Earth",
+"mass": 5.97,
+"distanceFromSun": 149.6
+},
+{
+"name": "Mars",
+"mass": 0.642,
+"distanceFromSun": 227.9
+},
+{
+"name": "Jupiter",
+"mass": 1898,
+"distanceFromSun": 778.6
+},
+{
+"name": "Saturn",
+"mass": 568,
+"distanceFromSun": 1433.5
+},
+{
+"name": "Uranus",
+"mass": 86.8,
+"distanceFromSun": 2872.5
+},
+{
+"name": "Neptune",
+"mass": 102,
+"distanceFromSun": 4495.1
+},
+{
+"name": "Pluto",
+"mass": 0.0146,
+"distanceFromSun": 5906.4
+}
+]

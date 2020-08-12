@@ -1,0 +1,458 @@
+[
+  {
+    "year": 1960,
+    "name": "Swiss Family Robinson",
+    "worldwideGross": 30000000,
+    "budget": 4000000
+  },
+  {
+    "year": 1960,
+    "name": "Spartacus",
+    "worldwideGross": 22105225,
+    "budget": 10284014
+  },
+  {
+    "year": 1960,
+    "name": "Psycho",
+    "worldwideGross": 14000000,
+    "budget": 800000
+  },
+  {
+    "year": 1961,
+    "name": "One Hundred and One Dalmatians",
+    "worldwideGross": 303000000,
+    "budget": 3800000
+  },
+  {
+    "year": 1961,
+    "name": "West Side Story",
+    "worldwideGross": 31800000,
+    "budget": 7000000
+  },
+  {
+    "year": 1962,
+    "name": "Lawrence of Arabia",
+    "worldwideGross": 69995385,
+    "budget": 13800000
+  },
+  {
+    "year": 1962,
+    "name": "How the West Was Won",
+    "worldwideGross": 35000000,
+    "budget": 14483000
+  },
+  {
+    "year": 1962,
+    "name": "The Longest Day",
+    "worldwideGross": 33200000,
+    "budget": 8600000
+  },
+  {
+    "year": 1963,
+    "name": "Cleopatra",
+    "worldwideGross": 40300000,
+    "budget": 31115000
+  },
+  {
+    "year": 1963,
+    "name": "From Russia with Love",
+    "worldwideGross": 12500000,
+    "budget": 2000000
+  },
+  {
+    "year": 1964,
+    "name": "My Fair Lady",
+    "worldwideGross": 55000000,
+    "budget": 17000000
+  },
+  {
+    "year": 1964,
+    "name": "Goldfinger",
+    "worldwideGross": 46000000,
+    "budget": 3000000
+  },
+  {
+    "year": 1964,
+    "name": "Mary Poppins",
+    "worldwideGross": 47500000,
+    "budget": 5200000
+  },
+  {
+    "year": 1965,
+    "name": "The Sound of Music",
+    "worldwideGross": 114600000,
+    "budget": 8000000
+  },
+  {
+    "year": 1966,
+    "name": "The Bible: In the Beginning",
+    "worldwideGross": 25325000,
+    "budget": 18000000
+  },
+  {
+    "year": 1966,
+    "name": "Hawaii",
+    "worldwideGross": 15600000,
+    "budget": 15000000
+  },
+  {
+    "year": 1966,
+    "name": "Who's Afraid of Virginia Woolf?",
+    "worldwideGross": 14500000,
+    "budget": 7613000
+  },
+  {
+    "year": 1967,
+    "name": "The Jungle Book",
+    "worldwideGross": 23800000,
+    "budget": 3950000
+  },
+  {
+    "year": 1967,
+    "name": "The Graduate",
+    "worldwideGross": 85000000,
+    "budget": 3100000
+  },
+  {
+    "year": 1968,
+    "name": "2001: A Space Odyssey",
+    "worldwideGross": 21900000,
+    "budget": 10300000
+  },
+  {
+    "year": 1968,
+    "name": "Funny Girl",
+    "worldwideGross": 90000000,
+    "budget": 8800000
+  },
+  {
+    "year": 1969,
+    "name": "Butch Cassidy and the Sundance Kid",
+    "worldwideGross": 37100000,
+    "budget": 6600000
+  },
+  {
+    "year": 1970,
+    "name": "Love Story",
+    "worldwideGross": 80000000,
+    "budget": 2260000
+  },
+  {
+    "year": 1970,
+    "name": "Airport",
+    "worldwideGross": 75000000,
+    "budget": 10000000
+  },
+  {
+    "year": 1971,
+    "name": "The French Connection",
+    "worldwideGross": 75000000,
+    "budget": 3300000
+  },
+  {
+    "year": 1971,
+    "name": "Diamonds Are Forever",
+    "worldwideGross": 45700000,
+    "budget": 7200000
+  },
+  {
+    "year": 1972,
+    "name": "The Godfather",
+    "worldwideGross": 135000000,
+    "budget": 6600000
+  },
+  {
+    "year": 1973,
+    "name": "The Exorcist",
+    "worldwideGross": 112300000,
+    "budget": 10000000
+  },
+  {
+    "year": 1973,
+    "name": "The Sting",
+    "worldwideGross": 115000000,
+    "budget": 5500000
+  },
+  {
+    "year": 1974,
+    "name": "The Towering Inferno",
+    "worldwideGross": 104838000,
+    "budget": 14300000
+  },
+  {
+    "year": 1975,
+    "name": "Jaws",
+    "worldwideGross": 193700000,
+    "budget": 9000000
+  },
+  {
+    "year": 1976,
+    "name": "Rocky",
+    "worldwideGross": 77100000,
+    "budget": 1075000
+  },
+  {
+    "year": 1978,
+    "name": "Grease",
+    "worldwideGross": 341000000,
+    "budget": 6000000
+  },
+  {
+    "year": 1979,
+    "name": "Moonraker",
+    "worldwideGross": 210300000,
+    "budget": 31000000
+  },
+  {
+    "year": 1979,
+    "name": "Rocky II",
+    "worldwideGross": 200182289,
+    "budget": 7000000
+  },
+  {
+    "year": 1980,
+    "name": "The Empire Strikes Back",
+    "worldwideGross": 413562607,
+    "budget": 27500000
+  },
+  {
+    "year": 1981,
+    "name": "Raiders of the Lost Ark",
+    "worldwideGross": 342000000,
+    "budget": 20400000
+  },
+  {
+    "year": 1982,
+    "name": "E.T. the Extra-Terrestrial",
+    "worldwideGross": 641500000,
+    "budget": 11340000
+  },
+  {
+    "year": 1983,
+    "name": "Return of the Jedi",
+    "worldwideGross": 385845197,
+    "budget": 37600000
+  },
+  {
+    "year": 1984,
+    "name": "Indiana Jones and the Temple of Doom",
+    "worldwideGross": 333107271,
+    "budget": 27600000
+  },
+  {
+    "year": 1985,
+    "name": "Back to the Future",
+    "worldwideGross": 381109762,
+    "budget": 20500000
+  },
+  {
+    "year": 1986,
+    "name": "Top Gun",
+    "worldwideGross": 345000000,
+    "budget": 16500000
+  },
+  {
+    "year": 1987,
+    "name": "Fatal Attraction",
+    "worldwideGross": 320145905,
+    "budget": 14000000
+  },
+  {
+    "year": 1988,
+    "name": "Rain Man",
+    "worldwideGross": 354825476,
+    "budget": 30000000
+  },
+  {
+    "year": 1989,
+    "name": "Indiana Jones and the Last Crusade",
+    "worldwideGross": 484085903,
+    "budget": 45700000
+  },
+  {
+    "year": 1990,
+    "name": "Ghost",
+    "worldwideGross": 505702588,
+    "budget": 22000000
+  },
+  {
+    "year": 1991,
+    "name": "Terminator 2: Judgment Day",
+    "worldwideGross": 519843345,
+    "budget": 94000000
+  },
+  {
+    "year": 1992,
+    "name": "Aladdin",
+    "worldwideGross": 504050045,
+    "budget": 28000000
+  },
+  {
+    "year": 1993,
+    "name": "Jurassic Park",
+    "worldwideGross": 914691118,
+    "budget": 65500000
+  },
+  {
+    "year": 1994,
+    "name": "The Lion King",
+    "worldwideGross": 763455561,
+    "budget": 62150000
+  },
+  {
+    "year": 1995,
+    "name": "Toy Story",
+    "worldwideGross": 364873776,
+    "budget": 30000000
+  },
+  {
+    "year": 1995,
+    "name": "Die Hard with a Vengeance",
+    "worldwideGross": 366101666,
+    "budget": 70000000
+  },
+  {
+    "year": 1996,
+    "name": "Independence Day",
+    "worldwideGross": 817400891,
+    "budget": 75000000
+  },
+  {
+    "year": 1997,
+    "name": "Titanic",
+    "worldwideGross": 1843201268,
+    "budget": 200000000
+  },
+  {
+    "year": 1998,
+    "name": "Armageddon",
+    "worldwideGross": 553709626,
+    "budget": 140000000
+  },
+  {
+    "year": 1999,
+    "name": "Star Wars: Episode I – The Phantom Menace",
+    "worldwideGross": 924317558,
+    "budget": 121250000
+  },
+  {
+    "year": 2000,
+    "name": "Mission: Impossible 2",
+    "worldwideGross": 546388105,
+    "budget": 112500000
+  },
+  {
+    "year": 2001,
+    "name": "Harry Potter and the Philosopher's Stone",
+    "worldwideGross": 974755371,
+    "budget": 125000000
+  },
+  {
+    "year": 2002,
+    "name": "The Lord of the Rings: The Two Towers",
+    "worldwideGross": 936689735,
+    "budget": 94000000
+  },
+  {
+    "year": 2003,
+    "name": "The Lord of the Rings: The Return of the King",
+    "worldwideGross": 1140682011,
+    "budget": 94000000
+  },
+  {
+    "year": 2004,
+    "name": "Shrek 2",
+    "worldwideGross": 919838758,
+    "budget": 150000000
+  },
+  {
+    "year": 2005,
+    "name": "Harry Potter and the Goblet of Fire",
+    "worldwideGross": 895921036,
+    "budget": 150000000
+  },
+  {
+    "year": 2006,
+    "name": "Pirates of the Caribbean: Dead Man's Chest",
+    "worldwideGross": 1066179725,
+    "budget": 225000000
+  },
+  {
+    "year": 2007,
+    "name": "Pirates of the Caribbean: At World's End",
+    "worldwideGross": 963420425,
+    "budget": 300000000
+  },
+  {
+    "year": 2008,
+    "name": "The Dark Knight",
+    "worldwideGross": 997039412,
+    "budget": 185000000
+  },
+  {
+    "year": 2009,
+    "name": "Avatar",
+    "worldwideGross": 2749064328,
+    "budget": 237000000
+  },
+  {
+    "year": 2010,
+    "name": "Toy Story 3",
+    "worldwideGross": 1066969703,
+    "budget": 200000000
+  },
+  {
+    "year": 2012,
+    "name": "The Avengers",
+    "worldwideGross": 1518812988,
+    "budget": 220000000
+  },
+  {
+    "year": 2013,
+    "name": "Frozen",
+    "worldwideGross": 1287000000,
+    "budget": 150000000
+  },
+  {
+    "year": 2014,
+    "name": "Transformers: Age of Extinction",
+    "worldwideGross": 1104039076,
+    "budget": 210000000
+  },
+  {
+    "year": 2015,
+    "name": "Star Wars: The Force Awakens",
+    "worldwideGross": 2068223624,
+    "budget": 245000000
+  },
+  {
+    "year": 2016,
+    "name": "Captain America: Civil War",
+    "worldwideGross": 1153304495,
+    "budget": 250000000
+  },
+  {
+    "year": 2017,
+    "name": "Star Wars: The Last Jedi",
+    "worldwideGross": 1332539889,
+    "budget": 200000000
+  },
+  {
+    "year": 2018,
+    "name": "Avengers: Infinity War",
+    "worldwideGross": 2048359754,
+    "budget": 358000000
+  },
+  {
+    "year": 2019,
+    "name": "Avengers: Endgame",
+    "worldwideGross": 2797800564,
+    "budget": 356000000
+  },
+  {
+    "year": 2020,
+    "name": "Bad Boys for Life",
+    "worldwideGross": 425514702,
+    "budget": 90000000
+  }
+]
