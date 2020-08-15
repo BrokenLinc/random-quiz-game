@@ -67,20 +67,3 @@ export const deleteGameUser = async (gameId, userId) => {
   await updateGame(gameId, { userIds: arrayRemove(userId) });
   return db.gameUser(gameId, userId).delete();
 };
-
-export default {
-  useGameData,
-  useGameUserData,
-  useGameUsersData,
-  useUserGames,
-
-  addGame,
-  getGame,
-  updateGame,
-  deleteGame,
-
-  addGameUser,
-  getGameUser,
-  updateGameUser,
-  deleteGameUser,
-};
