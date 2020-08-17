@@ -33,10 +33,7 @@ export const useUserGames = (userId) => useCollectionData(
 
 // Games
 export const addGame = (values) => {
-  return db.games().add({
-    name: 'Untitled Game',
-    ...values,
-  });
+  return db.games().add(values);
 };
 export const getGame = (gameId) => {
   return db.game(gameId).get();

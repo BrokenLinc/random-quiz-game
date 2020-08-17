@@ -1,14 +1,13 @@
 import React from 'react';
 import { map } from 'lodash';
-import { useForm } from 'react-hook-form';
 import {
   Box,
   Flex,
-  Input,
   Stack,
   useDisclosure
 } from '@chakra-ui/core';
 import { useHistory } from 'react-router-dom';
+import { format as formatDate } from 'date-fns';
 
 import useAuth from '../lib/useAuth';
 import SimpleModal from '../lib/components/SimpleModal';
@@ -45,15 +44,14 @@ const GamesListing = () => {
 };
 
 const NewGameButton = (props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { register, handleSubmit } = useForm();
   const { hostGame, user } = useAuthorizedVM();
   const history = useHistory();
 
-  const onSubmit = async (gameValues) => {
-    // TODO: let the user supply a displayName and photoURL
-    // TODO: centralize host/join logic
-    const game = await hostGame(gameValues, {
+  // TODO: centralize host/join logic
+  const handleClick = async () => {
+    const game = await hostGame({
+      name: formatDate(new Date(), 'MMM d, h:mmaaaaa'),
+    }, {
       name: user.displayName.split(' ')[0],
       photoURL: user.photoURL,
     });
@@ -61,23 +59,7 @@ const NewGameButton = (props) => {
   };
 
   return (
-    <>
-      <Button {...props} onClick={onOpen}>New game</Button>
-      <SimpleModal
-        title="Name your game"
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={handleSubmit(onSubmit)}
-        footer={<Button type="submit" rightIcon="arrow-right">Start playing</Button>}
-      >
-        <Input
-          name="name"
-          placeholder="Untitled Game"
-          ref={register({ maxLength: 30, required: 'Required' })}
-          autoFocus
-        />
-      </SimpleModal>
-    </>
+    <Button {...props} onClick={handleClick}>New game</Button>
   );
 };
 
