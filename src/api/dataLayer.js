@@ -33,10 +33,7 @@ export const useUserGames = (userId) => useCollectionData(
 
 // Games
 export const addGame = (values) => {
-  return db.games().add({
-    name: 'Untitled Game',
-    ...values,
-  });
+  return db.games().add(values);
 };
 export const getGame = (gameId) => {
   return db.game(gameId).get();
@@ -66,21 +63,4 @@ export const deleteGameUser = async (gameId, userId) => {
   // Update the normalization arrays
   await updateGame(gameId, { userIds: arrayRemove(userId) });
   return db.gameUser(gameId, userId).delete();
-};
-
-export default {
-  useGameData,
-  useGameUserData,
-  useGameUsersData,
-  useUserGames,
-
-  addGame,
-  getGame,
-  updateGame,
-  deleteGame,
-
-  addGameUser,
-  getGameUser,
-  updateGameUser,
-  deleteGameUser,
 };

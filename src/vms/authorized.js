@@ -11,7 +11,7 @@ const useCreateAuthorizedVM = () => {
 
   // functions
   // TODO: useCallback
-  const hostGame = async (gameValues, userValues) => {
+  const hostGame = async (gameValues = {}, userValues = {}) => {
     const game = await api.addGame({
       ...gameValues,
       hostUserId: myUserId,

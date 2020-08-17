@@ -1,8 +1,9 @@
 import { map, times } from 'lodash';
 import React from 'react';
 import {
-  Avatar, Box, Flex, Heading, Input, Stack, Text,
+  Avatar, Box, Divider, Flex, Heading, Input, Stack, Text,
 } from '@chakra-ui/core';
+import { useCopyToClipboard } from 'react-use';
 
 import { PHASES_PER_ROUND, ROUNDS_PER_GAME } from '../utils/constants';
 import { AuthorizedVMProvider } from '../vms/authorized';
@@ -16,6 +17,26 @@ import { MotionBox } from './Motion';
 const getWaitingMessageForUsers = (users) => {
   const names = map(users, (user) => user.name);
   return `Waiting for ${friendlyJoin(names)}...`
+};
+
+const InvitationButton = (props) => {
+  const { game } = useGameVM();
+  const [state, copyToClipboard] = useCopyToClipboard();
+
+  let icon = 'copy';
+  if (state.error) icon = 'exclamation-triangle';
+  else if (state.value) icon = 'check';
+
+
+  return (
+    <Button
+      rightIcon={icon}
+      onClick={() => copyToClipboard(game.id)}
+      {...props}
+    >
+      Copy invitation code
+    </Button>
+  );
 };
 
 const Question = () => {
@@ -35,6 +56,7 @@ const Question = () => {
   return (
     <React.Fragment>
       <Heading mb={4}>Q: {game.question}</Heading>
+      <Divider borderColor="gray.800" borderWidth={3} opacity={1} mb={4} />
       <Input
         defaultValue={myGameUser.answer}
         isDisabled={myGameUser.ready}
@@ -98,6 +120,7 @@ const Scoreboard = () => {
   return (
     <React.Fragment>
       <Heading mb={4}>Scoreboard</Heading>
+      <Divider borderColor="gray.800" borderWidth={3} opacity={1} mb={4} />
       <Stack mb={4} spacing={2}>
         {map(users, (user) => (
           <Flex key={user.id} align="center">
@@ -117,9 +140,9 @@ const Scoreboard = () => {
 const BackgroundSplashes = () => {
   const { loaded, error, game } = useGameVM();
 
-  if (!loaded || error) return null;
+  const colors = ['pink.400', 'blue.400', 'purple.400', 'yellow.400'];
 
-  const colors = ['pink.400', 'blue.400', 'purple.400', 'yellow.400']
+  if (!loaded || error) return null;
 
   return times(ROUNDS_PER_GAME, (n) => {
     const bg = colors[n % colors.length];
@@ -146,9 +169,9 @@ const GameView = () => {
   };
 
   return (
-    <Flex height="100%" direction="column" align="center" justify="center">
+    <React.Fragment>
       <BackgroundSplashes />
-      <Box p={4} position="relative" maxWidth={550}>
+      <Box p={4} position="relative" maxWidth={550} width="100%">
         <Suspender {...vm}>
           {() => {
             if (!myGameUser) return (
@@ -158,15 +181,18 @@ const GameView = () => {
             if (!game.hasStarted) return (
               <React.Fragment>
                 <Heading mb={4}>Send your friends the link!</Heading>
-                <Stack mb={4} spacing={2}>
+                <Stack mb={8} spacing={2}>
                   {map(users, (user) => (
                     <Flex key={user.id} align="center">
                       <Avatar src={user.photoURL} mr={2} />
-                      <Text>{user.name}</Text>
+                      <Text fontWeight="bold">{user.name}</Text>
                     </Flex>
                   ))}
                 </Stack>
-                <Button onClick={actions.start}>Start game</Button>
+                <Stack isInline spacing={2}>
+                  <InvitationButton />
+                  <Button rightIcon="play" onClick={actions.start}>Start game</Button>
+                </Stack>
               </React.Fragment>
             );
 
@@ -188,7 +214,7 @@ const GameView = () => {
           }}
         </Suspender>
       </Box>
-    </Flex>
+    </React.Fragment>
   );
 };
 

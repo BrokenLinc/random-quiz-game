@@ -12,8 +12,8 @@ const Button = (props) => {
 
   return (
     <DefaultButton
-      rightIcon={renderIcon(rightIcon, { style: { marginLeft: 8 } })}
-      leftIcon={renderIcon(leftIcon, { style: { marginRight: 8 } })}
+      rightIcon={renderIcon(rightIcon, { style: { width: '1em', marginLeft: 8 } })}
+      leftIcon={renderIcon(leftIcon, { style: { width: '1em', marginRight: 8 } })}
       {...restProps}
     />
   );
