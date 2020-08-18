@@ -3,8 +3,9 @@ import { map } from 'lodash';
 import {
   Box,
   Flex,
+  Image,
   Stack,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/core';
 import { useHistory } from 'react-router-dom';
 import { format as formatDate } from 'date-fns';
@@ -89,6 +90,7 @@ const GamesView = () => {
   return (
     <Flex height="100%" alignItems="center" justifyContent="center">
       <Stack width={220}>
+        <Image alt="How Many Times" src="logo.svg" mb={4} width={220} />
         <NewGameButton />
         <LoadGameButton />
         <Button

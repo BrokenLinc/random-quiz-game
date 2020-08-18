@@ -18,7 +18,7 @@ const Suspender = (props) => {
       <CloseButton position="absolute" right="8px" top="8px" />
     </Alert>
   );
-  if (!loaded) return <Spinner />;
+  if (!loaded) return <Spinner display="block" mx="auto" />;
   return children();
 };
 

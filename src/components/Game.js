@@ -1,9 +1,10 @@
 import { map, times } from 'lodash';
 import React from 'react';
 import {
-  Avatar, Box, Divider, Flex, Heading, Input, Stack, Text,
+  Avatar, Box, Divider, Flex, Heading, Image, Input, Stack, Text,
 } from '@chakra-ui/core';
 import { useCopyToClipboard } from 'react-use';
+import { Link } from 'react-router-dom';
 
 import { ROUNDS_PER_GAME } from '../utils/constants';
 import { AuthorizedVMProvider } from '../vms/authorized';
@@ -208,6 +209,9 @@ const GameView = () => {
           }}
         </Suspender>
       </Box>
+      <Link to="/">
+        <Image layoutId="logo" alt="How Many Times" src="logo.svg" width={60} position="fixed" top="16px" left="16px" />
+      </Link>
     </React.Fragment>
   );
 };
