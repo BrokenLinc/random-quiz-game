@@ -24,7 +24,11 @@ const generatePopulationQuestion = () => {
   const smallerSelection = sortedSelections[0];
   const answer = largerSelection[PROPERTY] / smallerSelection[PROPERTY];
 
-  return `National Population | How many times more populated is ${largerSelection.name} than ${smallerSelection.name}? | ${answer.toFixed(1)}`;
+  return {
+    category: 'National Population',
+    text: `How many times more populated is ${largerSelection.name} than ${smallerSelection.name}?`,
+    answer: answer.toFixed(1),
+  };
 };
 
 export default generatePopulationQuestion;

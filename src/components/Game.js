@@ -5,36 +5,34 @@ import {
 } from '@chakra-ui/core';
 import { useCopyToClipboard } from 'react-use';
 
-import { PHASES_PER_ROUND, ROUNDS_PER_GAME } from '../utils/constants';
+import { ROUNDS_PER_GAME } from '../utils/constants';
 import { AuthorizedVMProvider } from '../vms/authorized';
 import { GameVMProvider, useGameVM } from '../vms/game';
 import friendlyJoin from '../utils/friendlyJoin';
 import Button from './Button';
+import Icon from './Icon';
 import Suspender from './Suspender';
 import { MotionBox } from './Motion';
 
-// TODO: WaitingForPlayers component
 const getWaitingMessageForUsers = (users) => {
   const names = map(users, (user) => user.name);
   return `Waiting for ${friendlyJoin(names)}...`
 };
 
 const InvitationButton = (props) => {
-  const { game } = useGameVM();
   const [state, copyToClipboard] = useCopyToClipboard();
 
   let icon = 'copy';
   if (state.error) icon = 'exclamation-triangle';
   else if (state.value) icon = 'check';
 
-
   return (
     <Button
       rightIcon={icon}
-      onClick={() => copyToClipboard(game.id)}
+      onClick={() => copyToClipboard(window.location.href)}
       {...props}
     >
-      Copy invitation code
+      Copy link
     </Button>
   );
 };
@@ -44,59 +42,32 @@ const Question = () => {
   const { actions, game, myGameUser } = vm;
   const [myAnswer, setMyAnswer] = React.useState('');
 
-  const onOkayClick = () => {
+  const handleOkayClick = () => {
     actions.answer(myAnswer);
-    actions.ready();
   };
 
-  if (game.everyoneReady) return (
-    <Button onClick={actions.next} size="lg">Vote now!</Button>
-  );
+  const handleInputChange = (e) => {
+    setMyAnswer(parseInt(e.target.value) || '');
+  };
 
   return (
     <React.Fragment>
-      <Heading mb={4}>Q: {game.question}</Heading>
+      <Heading size="xs" mb={2}>{game.question.category}</Heading>
+      <Heading size="lg" mb={4}>{game.question.text}{!!game.question.note && '*'}</Heading>
       <Divider borderColor="gray.800" borderWidth={3} opacity={1} mb={4} />
       <Input
         defaultValue={myGameUser.answer}
         isDisabled={myGameUser.ready}
         value={myAnswer}
-        onChange={(e) => setMyAnswer(e.target.value)}
+        onChange={handleInputChange}
         mb={4}
       />
       {!myGameUser.ready && (
-        <Button isDisabled={!myAnswer} onClick={onOkayClick}>Okay</Button>
+        <Button isDisabled={!myAnswer} onClick={handleOkayClick}>Okay</Button>
       )}
-    </React.Fragment>
-  );
-};
-
-const Vote = () => {
-  const vm = useGameVM();
-  const { actions, game, users } = vm;
-
-  const setVote = (userId) => {
-    actions.vote(userId);
-    actions.ready();
-  };
-
-  if (game.everyoneReady) return (
-    <Button onClick={actions.next} size="lg">See the results!</Button>
-  );
-
-  // TODO: randomize display based on static seed
-
-  return (
-    <React.Fragment>
-      <Heading mb={4}>What's the best answer?</Heading>
-      <Text fontWeight="bold" mb={4}>Q: "{game.question}"</Text>
-      <Stack mb={4}>
-        {map(users, (user) => {
-          return (
-            <Button key={user.id} onClick={() => setVote(user.id)}>{user.answer}</Button>
-          );
-        })}
-      </Stack>
+      {!!game.question.note && (
+        <Text fontSize="10px" opacity={0.8} mt={4}>*{game.question.note}</Text>
+      )}
     </React.Fragment>
   );
 };
@@ -109,24 +80,48 @@ const Scoreboard = () => {
     actions.ready();
   };
 
-  // TODO: if it's the last round of the game, show as "total score" with "new game" button.
+  if (game.everyoneReady) {
+    if (game.isLastRound) {
+      return (
+        <React.Fragment>
+          <Heading size="lg" mb={4} textAlign="center">{game.winner.name} wins!</Heading>
+          <Button onClick={actions.start} size="lg" mx="auto" display="block">
+            Start a new game!
+          </Button>
+        </React.Fragment>
+      );
+    }
 
-  if (game.everyoneReady) return (
-    <Button onClick={actions.next} size="lg">
-      {game.isLastRound ? 'Start a new game!' : 'Start the next round!'}
-    </Button>
-  );
+    return (
+      <React.Fragment>
+        <Heading size="lg" mb={4} textAlign="center">Everyone's ready!</Heading>
+        <Button onClick={actions.nextRound} size="lg" mx="auto" display="block">
+          Start round {game.round + 2}!
+        </Button>
+      </React.Fragment>
+    );
+  }
 
   return (
     <React.Fragment>
-      <Heading mb={4}>Scoreboard</Heading>
-      <Divider borderColor="gray.800" borderWidth={3} opacity={1} mb={4} />
-      <Stack mb={4} spacing={2}>
+      <Heading size="xs" mb={2}>{game.question.text}</Heading>
+      <Heading size="xl" mb={4}>{game.question?.answer} times</Heading>
+      <Divider borderColor="gray.800" borderWidth={3} opacity={1} mb={2} />
+      <Stack mb={4}>
+        <Flex align="center" justify="flex-end">
+          <Text width="60px" fontSize="12px" textAlign="center">Answer</Text>
+          <Text width="60px" fontSize="12px" textAlign="center">Score</Text>
+          <Text width="60px" fontSize="12px" textAlign="center" fontWeight="bold">Total</Text>
+        </Flex>
         {map(users, (user) => (
-          <Flex key={user.id} align="center">
-            <Avatar src={user.photoURL} mr={2} />
-            <Text>{user.name}</Text>
-            <Text ml={4}>[{user.score} pts]</Text>
+          <Flex key={user.id} align="center" borderTop="1px dashed black" pt={2}>
+            <Stack isInline mr="auto">
+              <Avatar size="xs" src={user.photoURL} mr={2} />
+              <Text>{user.name}</Text>
+            </Stack>
+            <Text width="60px" textAlign="center">{user.answer || <Icon icon="comment-dots"/>}</Text>
+            <Text width="60px" textAlign="center">+{user.score}</Text>
+            <Text width="60px" textAlign="center" fontWeight="bold">{user.totalScore}</Text>
           </Flex>
         ))}
       </Stack>
@@ -138,7 +133,7 @@ const Scoreboard = () => {
 };
 
 const BackgroundSplashes = () => {
-  const { loaded, error, game } = useGameVM();
+  const { loaded, error, game, myGameUser } = useGameVM();
 
   const colors = ['pink.400', 'blue.400', 'purple.400', 'yellow.400'];
 
@@ -147,7 +142,7 @@ const BackgroundSplashes = () => {
   return times(ROUNDS_PER_GAME, (n) => {
     const bg = colors[n % colors.length];
     let size = 0;
-    if (n === game.round + 1 && game.phase === PHASES_PER_ROUND - 1 && game.everyoneReady) size = 300; // big dot
+    if (n === game.round + 1 && myGameUser.ready) size = 300; // big dot
     if (n <= game.round) size = '150vmax'; // full screen
 
     return (
@@ -171,11 +166,14 @@ const GameView = () => {
   return (
     <React.Fragment>
       <BackgroundSplashes />
-      <Box p={4} position="relative" maxWidth={550} width="100%">
+      <Box p={4} position="relative" maxWidth={375} width="100%">
         <Suspender {...vm}>
           {() => {
             if (!myGameUser) return (
-              <Button onClick={onJoinClick}>Join game</Button>
+              <Box textAlign="center">
+                <Heading mb={4}>You've been invited!</Heading>
+                <Button onClick={onJoinClick}>Join game</Button>
+              </Box>
             );
 
             if (!game.hasStarted) return (
@@ -197,19 +195,15 @@ const GameView = () => {
             );
 
             if (myGameUser.ready && !game.everyoneReady) return (
-              <Heading mb={4}>{getWaitingMessageForUsers(game.unreadyUsers)}</Heading>
+              <Heading size="lg" textAlign="center" width={260} mx="auto" mb={0}>{getWaitingMessageForUsers(game.unreadyUsers)}</Heading>
             );
 
-            if (game.phase === 0) return (
-              <Question />
-            );
-
-            if (game.phase === 1) return (
-              <Vote />
-            );
-
-            if (game.phase === 2) return (
+            if (myGameUser.answer) return (
               <Scoreboard />
+            );
+
+            return (
+              <Question />
             );
           }}
         </Suspender>

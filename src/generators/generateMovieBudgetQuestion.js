@@ -11,8 +11,12 @@ const generateMovieBudgetQuestion = () => {
   const smallerSelection = sortedSelections[0];
   const answer = largerSelection[PROPERTY] / smallerSelection[PROPERTY];
 
-  return `Movie Budget | How many times more expensive was ${largerSelection.name} (${largerSelection.year}) than ${smallerSelection.name} (${smallerSelection.year})? | ${answer.toFixed(1)} | Not adjusted for inflation.`;
-
+  return {
+    category: 'Movie Budget',
+    text: `How many times more expensive was ${largerSelection.name} than ${smallerSelection.name}?`,
+    note: 'Not adjusted for inflation.',
+    answer: answer.toFixed(1),
+  };
 };
 
 export default generateMovieBudgetQuestion;

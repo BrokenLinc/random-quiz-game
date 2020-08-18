@@ -24,7 +24,11 @@ const generatePopulationQuestion = () => {
   const smallerSelection = sortedSelections[0];
   const answer = largerSelection[PROPERTY] / smallerSelection[PROPERTY];
 
-  return `National Surface Area | How many times larger is ${largerSelection.name} then ${smallerSelection.name}? | ${answer.toFixed(1)}`;
+  return {
+    category: 'National Surface Area',
+    text: `How many times larger is ${largerSelection.name} than ${smallerSelection.name}?`,
+    answer: answer.toFixed(1),
+  };
 };
 
 export default generatePopulationQuestion;

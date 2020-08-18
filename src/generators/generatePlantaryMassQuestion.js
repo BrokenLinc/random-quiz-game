@@ -11,7 +11,11 @@ const generatePlanetaryMassQuestion  = () => {
   const smallerSelection = sortedSelections[0];
   const answer = largerSelection[PROPERTY] / smallerSelection[PROPERTY];
 
-  return `Planetary Mass | How many times more massive is ${largerSelection.name} than ${smallerSelection.name}? | ${answer.toFixed(1)}`;
+  return {
+    category: 'Planetary Mass',
+    text: `How many times more massive is ${largerSelection.name} than ${smallerSelection.name}?`,
+    answer: answer.toFixed(1),
+  };
 };
 
 export default generatePlanetaryMassQuestion;

@@ -11,7 +11,11 @@ const generatePlanetaryDistanceQuestion  = () => {
   const smallerSelection = sortedSelections[0];
   const answer = largerSelection[PROPERTY] / smallerSelection[PROPERTY];
 
-  return `Planetary Distance from the Sun | How many times further is ${largerSelection.name} than ${smallerSelection.name}? | ${answer.toFixed(1)}`;
+  return {
+    category: 'Planetary Distance from the Sun',
+    text: `How many times further is ${largerSelection.name} than ${smallerSelection.name}?`,
+    answer: answer.toFixed(1),
+  };
 };
 
 export default generatePlanetaryDistanceQuestion;
