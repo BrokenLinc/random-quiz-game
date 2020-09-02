@@ -1,7 +1,8 @@
 import { each, map, sortBy } from 'lodash';
 import multiWeightedRandom from 'multi-weighted-random';
-
 import rawData from 'country-json/src/country-by-surface-area';
+
+import abbreviateNum from '../utils/abbreviateNumber';
 
 const PROPERTY = 'area';
 
@@ -28,6 +29,7 @@ const generatePopulationQuestion = () => {
     category: 'National Surface Area',
     text: `How many times larger is ${largerSelection.name} than ${smallerSelection.name}?`,
     answer: answer.toFixed(1),
+    answerNote: `${largerSelection.name} measures ${abbreviateNum(largerSelection[PROPERTY])} km², while ${smallerSelection.name} measures ${abbreviateNum(smallerSelection[PROPERTY])} km².`,
   };
 };
 

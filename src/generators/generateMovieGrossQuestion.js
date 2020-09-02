@@ -1,5 +1,6 @@
 import { sampleSize, sortBy } from 'lodash';
 
+import abbreviateNum from '../utils/abbreviateNumber';
 import data from './movies';
 
 const PROPERTY = 'worldwideGross';
@@ -16,6 +17,7 @@ const generateMovieGrossQuestion = () => {
     text: `How many times more lucrative was ${largerSelection.name} than ${smallerSelection.name}?`,
     note: 'Original release, not adjusted for inflation.',
     answer: answer.toFixed(1),
+    answerNote: `${largerSelection.name} earned $${abbreviateNum(largerSelection[PROPERTY])}, while ${smallerSelection.name} earned $${abbreviateNum(smallerSelection[PROPERTY])}.`,
   };
 };
 

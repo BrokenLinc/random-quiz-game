@@ -61,6 +61,9 @@ const useCreateGameVM = ({ gameId }) => {
   });
   const myGameUser = find(users, { id: myUser.id });
   game.winner = first(sortBy(users, ['score']));
+  if (myGameUser && myGameUser === game.winner) {
+    myGameUser.isWinner = true;
+  }
 
   // functions
   const answer = (text, userId = myGameUser.id) => {

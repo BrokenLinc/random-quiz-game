@@ -1,7 +1,8 @@
 import { each, map, sortBy } from 'lodash';
 import multiWeightedRandom from 'multi-weighted-random';
-
 import rawData from 'country-json/src/country-by-population';
+
+import abbreviateNum from '../utils/abbreviateNumber';
 
 const PROPERTY = 'population';
 
@@ -28,6 +29,7 @@ const generatePopulationQuestion = () => {
     category: 'National Population',
     text: `How many times more populated is ${largerSelection.name} than ${smallerSelection.name}?`,
     answer: answer.toFixed(1),
+    answerNote: `${largerSelection.name} has ${abbreviateNum(largerSelection[PROPERTY])} people, while ${smallerSelection.name} has ${abbreviateNum(smallerSelection[PROPERTY])}.`,
   };
 };
 

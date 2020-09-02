@@ -14,6 +14,7 @@ import Button from './Button';
 import Icon from './Icon';
 import Suspender from './Suspender';
 import { MotionBox } from './Motion';
+import WindowConfetti from './WindowConfetti';
 
 const getWaitingMessageForUsers = (users) => {
   const names = map(users, (user) => user.name);
@@ -85,9 +86,16 @@ const Scoreboard = () => {
     if (game.isLastRound) {
       return (
         <React.Fragment>
-          <Heading size="lg" mb={4} textAlign="center">{game.winner.name} wins!</Heading>
+          {myGameUser.isWinner ? (
+            <>
+              <WindowConfetti />
+              <Heading size="xl" mb={4} textAlign="center">You win!</Heading>
+            </>
+          ) : (
+            <Heading size="xl" mb={4} textAlign="center">{game.winner.name} wins!</Heading>
+          )}
           <Button onClick={actions.start} size="lg" mx="auto" display="block">
-            Start a new game!
+            New game
           </Button>
         </React.Fragment>
       );
@@ -106,7 +114,8 @@ const Scoreboard = () => {
   return (
     <React.Fragment>
       <Heading size="xs" mb={2}>{game.question.text}</Heading>
-      <Heading size="xl" mb={4}>{game.question?.answer} times</Heading>
+      <Heading size="xl" mb={2}>{game.question.answer} times</Heading>
+      <Heading size="xs" mb={4}>{game.question.answerNote}</Heading>
       <Divider borderColor="gray.800" borderWidth={3} opacity={1} mb={2} />
       <Stack mb={4}>
         <Flex align="center" justify="flex-end">
@@ -136,7 +145,7 @@ const Scoreboard = () => {
 const BackgroundSplashes = () => {
   const { loaded, error, game, myGameUser } = useGameVM();
 
-  const colors = ['pink.400', 'blue.400', 'purple.400', 'yellow.400'];
+  const colors = ['pink.300', 'blue.300', 'purple.300', 'yellow.300'];
 
   if (!loaded || error) return null;
 
@@ -147,7 +156,7 @@ const BackgroundSplashes = () => {
     if (n <= game.round) size = '150vmax'; // full screen
 
     return (
-      <MotionBox key={n} layoutId={`background-${n}`} position="absolute" borderRadius="50%" bg={bg} width={size} height={size} />
+      <MotionBox key={n} layoutId={`background-${n}`} position="fixed" borderRadius="50%" bg={bg} width={size} height={size} />
     );
   });
 };
