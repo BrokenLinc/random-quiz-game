@@ -14,6 +14,7 @@ import api from '../api';
 import { ROUNDS_PER_GAME } from '../utils/constants';
 import generateQuestions from '../utils/generateQuestions';
 import getFilledArrayWithIndexValue from '../utils/getFilledArrayWithIndexValue';
+import getGameRound from '../utils/getGameRound';
 
 const useCreateGameVM = ({ gameId }) => {
   const auth = useAuth();
@@ -28,6 +29,7 @@ const useCreateGameVM = ({ gameId }) => {
   // calculated values
   const game = { ...gameResponse.data };
   const questions = game.questions ? JSON.parse(game.questions) : [];
+  game.round = getGameRound(usersResponse.data);
   game.isLastRound = (game.round === ROUNDS_PER_GAME - 1);
   game.question = get(questions, game.round);
   game.everyoneAnswered = true;
@@ -80,11 +82,6 @@ const useCreateGameVM = ({ gameId }) => {
   const join = (userValues) => {
     return api.addGameUser(gameId, myUser.id, userValues);
   };
-  const nextRound = () => {
-    return api.updateGame(gameId, {
-      round: game.round + 1,
-    });
-  };
   const ready = (value = true, userId = myGameUser.id) => {
     const readies = getFilledArrayWithIndexValue(myGameUser.readies, game.round, value, false);
     return api.updateGameUser(gameId, userId, {
@@ -101,7 +98,6 @@ const useCreateGameVM = ({ gameId }) => {
     promises.push(api.updateGame(gameId, {
       hasStarted: true,
       isOver: false,
-      round: 0,
       questions: JSON.stringify(generateQuestions(10)),
     }));
   };
@@ -111,7 +107,6 @@ const useCreateGameVM = ({ gameId }) => {
       answer,
       end,
       join,
-      nextRound,
       ready,
       start,
     },

@@ -82,30 +82,19 @@ const Scoreboard = () => {
     actions.ready();
   };
 
-  if (game.everyoneReady) {
-    if (game.isLastRound) {
-      return (
-        <React.Fragment>
-          {myGameUser.isWinner ? (
-            <>
-              <WindowConfetti />
-              <Heading size="xl" mb={4} textAlign="center">You win!</Heading>
-            </>
-          ) : (
-            <Heading size="xl" mb={4} textAlign="center">{game.winner.name} wins!</Heading>
-          )}
-          <Button onClick={actions.start} size="lg" mx="auto" display="block">
-            New game
-          </Button>
-        </React.Fragment>
-      );
-    }
-
+  if (game.isLastRound && game.everyoneReady) {
     return (
       <React.Fragment>
-        <Heading size="lg" mb={4} textAlign="center">Everyone's ready!</Heading>
-        <Button onClick={actions.nextRound} size="lg" mx="auto" display="block">
-          Start round {game.round + 2}!
+        {myGameUser.isWinner ? (
+          <>
+            <WindowConfetti />
+            <Heading size="xl" mb={4} textAlign="center">You win!</Heading>
+          </>
+        ) : (
+          <Heading size="xl" mb={4} textAlign="center">{game.winner.name} wins!</Heading>
+        )}
+        <Button onClick={actions.start} size="lg" mx="auto" display="block">
+          New game
         </Button>
       </React.Fragment>
     );
@@ -145,14 +134,14 @@ const Scoreboard = () => {
 const BackgroundSplashes = () => {
   const { loaded, error, game, myGameUser } = useGameVM();
 
-  const colors = ['pink.300', 'blue.300', 'purple.300', 'yellow.300'];
+  const colors = ['teal.300', 'cyan.300', 'purple.300', 'pink.300', 'orange.300', 'green.300'];
 
   if (!loaded || error) return null;
 
   return times(ROUNDS_PER_GAME, (n) => {
     const bg = colors[n % colors.length];
     let size = 0;
-    if (n === game.round + 1 && myGameUser.ready) size = 300; // big dot
+    if (n === game.round + 1 && myGameUser?.ready) size = 300; // big dot
     if (n <= game.round) size = '150vmax'; // full screen
 
     return (
@@ -179,12 +168,22 @@ const GameView = () => {
       <Box p={4} position="relative" maxWidth={375} width="100%">
         <Suspender {...vm}>
           {() => {
-            if (!myGameUser) return (
-              <Box textAlign="center">
-                <Heading mb={4}>You've been invited!</Heading>
-                <Button onClick={onJoinClick}>Join game</Button>
-              </Box>
-            );
+            if (!myGameUser) {
+              if (game.hasStarted) {
+                return (
+                  <Box textAlign="center">
+                    <Heading size="lg">Sorry, the game started without you!</Heading>
+                  </Box>
+                );
+              }
+
+              return (
+                <Box textAlign="center">
+                  <Heading mb={4}>You've been invited!</Heading>
+                  <Button onClick={onJoinClick}>Join game</Button>
+                </Box>
+              );
+            }
 
             if (!game.hasStarted) return (
               <React.Fragment>
