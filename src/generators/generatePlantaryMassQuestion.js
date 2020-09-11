@@ -1,6 +1,5 @@
 import { sampleSize, sortBy } from 'lodash';
 
-import abbreviateNum from '../utils/abbreviateNumber';
 import data from './planets';
 
 const PROPERTY = 'mass';
