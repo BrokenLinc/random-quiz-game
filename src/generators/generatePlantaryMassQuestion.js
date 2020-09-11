@@ -16,7 +16,7 @@ const generatePlanetaryMassQuestion  = () => {
     category: 'Planetary Mass',
     text: `How many times more massive is ${largerSelection.name} than ${smallerSelection.name}?`,
     answer: answer.toFixed(1),
-    answerNote: `${largerSelection.name} measures ${abbreviateNum(largerSelection[PROPERTY] * 1000000000000000000000000000)} kg, while ${smallerSelection.name} measures ${abbreviateNum(smallerSelection[PROPERTY] * 1000000000000000000000000000)} kg.`,
+    answerNote: `${largerSelection.name} measures ${largerSelection[PROPERTY]}x10^24 kg, while ${smallerSelection.name} measures ${smallerSelection[PROPERTY]}x10^24 kg.`,
   };
 };
 
